@@ -1,1 +1,44 @@
-Hello World!
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventskalender</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f8f8f8; }
+        .calendar { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; max-width: 600px; margin: 20px auto; }
+        .door { width: 80px; height: 80px; background: #c00; color: white; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 5px; }
+        .door.open { background: white; color: black; border: 2px solid #c00; cursor: default; }
+        .content { display: none; margin-top: 20px; padding: 20px; background: white; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>Adventskalender</h1>
+    <div class="calendar" id="calendar"></div>
+    <div id="content" class="content"></div>
+    <script>
+        const days = 24;
+        const today = new Date().getDate();
+        const calendar = document.getElementById("calendar");
+        const content = document.getElementById("content");
+        
+        for (let i = 1; i <= days; i++) {
+            let door = document.createElement("div");
+            door.classList.add("door");
+            door.textContent = i;
+            if (i <= today) {
+                door.addEventListener("click", () => openDoor(i));
+            } else {
+                door.style.opacity = "0.5";
+            }
+            calendar.appendChild(door);
+        }
+        
+        function openDoor(day) {
+            document.querySelectorAll(".door")[day - 1].classList.add("open");
+            content.style.display = "block";
+            content.innerHTML = `<h2>Türchen ${day}</h2><p>Hier kommt dein Bild und deine Story für den ${day}. Dezember!</p>`;
+        }
+    </script>
+</body>
+</html>
