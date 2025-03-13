@@ -22,10 +22,10 @@
         }
         #calendar {
             display: grid;
-            grid-template-columns: repeat(8, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             margin: 20px auto;
-            max-width: 80%;
+            max-width: 60%;
         }
         .day {
             width: 80px;
@@ -63,13 +63,21 @@
 
     <script>
         const texts = [
-            "Tag 1: Willkommen bei den Lieblingsbildern!", "Tag 2: Ein schöner Sonnenuntergang", "Tag 3: Erinnerungen an den Sommer", /* usw. bis Tag 64 */
+            "Tag 1: Ein besonderer Moment.",
+            "Tag 2: Erinnerungen an schöne Zeiten.",
+            "Tag 3: Ein Lächeln, das den Tag erhellt.",
+            "Tag 4: Magische Farben des Himmels.",
+            "Tag 5: Ein Ort zum Träumen.",
+            "Tag 6: Ein spontanes Abenteuer.",
+            "Tag 7: Die Schönheit der Natur.",
+            "Tag 8: Ein Moment der Ruhe.",
+            "Tag 9: Eine Reise in die Vergangenheit."
         ];
 
         const today = new Date().getDate();
         const calendar = document.getElementById("calendar");
 
-        for (let i = 1; i <= 64; i++) {
+        for (let i = 1; i <= 9; i++) {
             const day = document.createElement("div");
             day.classList.add("day");
             day.textContent = i;
