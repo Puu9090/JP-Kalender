@@ -3,41 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adventskalender</title>
+    <title>Lieblingsbilder</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #f8f8f8; }
-        .calendar { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; max-width: 600px; margin: 20px auto; }
-        .door { width: 80px; height: 80px; background: #c00; color: white; font-size: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 5px; }
-        .door.open { background: white; color: black; border: 2px solid #c00; cursor: default; }
-        .content { display: none; margin-top: 20px; padding: 20px; background: white; border: 1px solid #ccc; }
+        body {
+            background-color: black;
+            color: #d4a3ff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .hidden { display: none; }
+        #intro {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 20px;
+        }
+        #calendar {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 10px;
+            margin: 20px auto;
+            max-width: 80%;
+        }
+        .day {
+            width: 80px;
+            height: 80px;
+            background-color: #6a0dad;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+        .day.opened {
+            background-color: #a64dff;
+        }
+        #image-box {
+            margin-top: 20px;
+        }
+        img { max-width: 80%; border-radius: 10px; }
     </style>
 </head>
 <body>
-    <h1>Adventskalender</h1>
-    <div class="calendar" id="calendar"></div>
-    <div id="content" class="content"></div>
+    <div id="intro">
+        <h1>Willkommen zu Lieblingsbilder!</h1>
+        <p>Jeden Tag kannst du ein neues Bild mit einer kleinen Geschichte dazu entdecken.</p>
+        <button onclick="document.getElementById('intro').style.display='none'">Okay</button>
+    </div>
+
+    <h1>Lieblingsbilder</h1>
+    <div id="calendar"></div>
+    <div id="image-box" class="hidden">
+        <img id="daily-image" src="" alt="Bild des Tages">
+        <p id="daily-text"></p>
+    </div>
+
     <script>
-        const days = 24;
+        const texts = [
+            "Tag 1: Willkommen bei den Lieblingsbildern!", "Tag 2: Ein schöner Sonnenuntergang", "Tag 3: Erinnerungen an den Sommer", /* usw. bis Tag 64 */
+        ];
+
         const today = new Date().getDate();
         const calendar = document.getElementById("calendar");
-        const content = document.getElementById("content");
-        
-        for (let i = 1; i <= days; i++) {
-            let door = document.createElement("div");
-            door.classList.add("door");
-            door.textContent = i;
+
+        for (let i = 1; i <= 64; i++) {
+            const day = document.createElement("div");
+            day.classList.add("day");
+            day.textContent = i;
             if (i <= today) {
-                door.addEventListener("click", () => openDoor(i));
+                day.addEventListener("click", () => showImage(i));
             } else {
-                door.style.opacity = "0.5";
+                day.style.opacity = "0.3";
             }
-            calendar.appendChild(door);
+            calendar.appendChild(day);
         }
-        
-        function openDoor(day) {
-            document.querySelectorAll(".door")[day - 1].classList.add("open");
-            content.style.display = "block";
-            content.innerHTML = `<h2>Türchen ${day}</h2><p>Hier kommt dein Bild und deine Story für den ${day}. Dezember!</p>`;
+
+        function showImage(day) {
+            document.getElementById("daily-image").src = `bilder/${day}.jpg`;
+            document.getElementById("daily-text").textContent = texts[day - 1];
+            document.getElementById("image-box").classList.remove("hidden");
         }
     </script>
 </body>
