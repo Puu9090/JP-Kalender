@@ -52,7 +52,7 @@
     </div>
 
     <div class="container" id="image-container">
-        <button onclick="showImage()">Tag 1</button>
+        <button onclick="showImage()">Tag anzeigen</button>
         <br><br>
         <img id="daily-image" src="" alt="Tägliches Bild" width="100%">
         <p id="question">Willst du etwas darüber erfahren?</p>
@@ -62,12 +62,20 @@
     </div>
 
     <script>
-        let currentDay = new Date().getDate();
+        // Startdatum setzen (z. B. 13. März 2024)
+        let startDate = new Date(2024, 2, 13); // 2 = März (Januar = 0)
+        let currentDay = Math.floor((new Date() - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
         let texts = {
             1: "Das ist das erste Bild – es zeigt, wie viel du mir bedeutest...",
             2: "Dieses Bild erinnert mich an unseren schönsten Moment...",
             3: "Hier sehe ich dich, wie du mein Herz erwärmst...",
-            // Weitere Texte für 4 bis 9...
+            4: "Ein Bild voller Liebe und Erinnerung...",
+            5: "Dieses Bild lässt mein Herz höher schlagen...",
+            6: "Der Moment, an dem ich wusste, dass du besonders bist...",
+            7: "Eine Erinnerung, die ich für immer festhalte...",
+            8: "So sehe ich dich, wenn ich die Augen schließe...",
+            9: "Ein Bild, das all meine Gefühle für dich zeigt..."
         };
 
         function startJourney() {
@@ -83,9 +91,9 @@
         function showText(answerYes) {
             let response = document.getElementById("response");
             if (answerYes) {
-                response.innerText = texts[currentDay] || "Heute gibt es keine Geschichte.";
+                response.innerHTML = texts[currentDay] || "Heute gibt es keine Geschichte.";
             } else {
-                response.innerText = "Naja... Pech gehabt, du bekommst trotzdem was dazu gesagt! " + (texts[currentDay] || "Heute gibt es keine Geschichte.");
+                response.innerHTML = "Naja... Pech gehabt, du bekommst trotzdem was dazu gesagt! <br><br>" + (texts[currentDay] || "Heute gibt es keine Geschichte.");
             }
             response.style.display = "block";
         }
