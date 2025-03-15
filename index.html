@@ -24,6 +24,15 @@
             border-radius: 10px;
             box-shadow: 0 0 15px #d4a1ff;
         }
+        .bubble {
+            background: #800080;
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            max-width: 500px;
+            margin: 20px auto;
+            display: none;
+        }
         button {
             background-color: #800080;
             color: white;
@@ -41,34 +50,33 @@
             display: none;
             margin-top: 20px;
         }
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #d4a1ff;
+        }
     </style>
 </head>
 <body>
     <div class="container" id="intro">
         <p>Mein geliebtes Mucki-Bärchen... du fragst dich bestimmt, was das hier ist? Das bist du, wie ich dich sehe...</p>
-        <p>Ich nehme dich mit auf eine Reise in meine Welt, in der ich dir auf meine Art erkläre, was es in mir auslöst</p>
-        <p>wenn ich diese ungestellten und natürlichen Bilder von dir sehe, die du teilweise nicht einmal kennst...</p>
+        <p>Ich nehme dich mit auf eine Reise in meine Welt, in der ich dir auf meine Art erkläre, was es in mir auslöst, wenn ich diese echten und natürlichen Bilder von dir sehe, die du teilweise nicht einmal kennst...</p>
         <p>Bist du bereit für die Reise?</p>
-        <button onclick="startJourney()">Okay</button>
+        <button onclick="startJourney(true)">Jaaa büdde</button>
+        <button onclick="startJourney(false)">Ahh no</button>
     </div>
 
     <div class="container" id="image-container">
-        <button onclick="showImage()">Tag anzeigen</button>
-        <br><br>
-        <img id="daily-image" src="" alt="Tägliches Bild" width="100%">
-        <p id="question">Willst du etwas darüber erfahren?</p>
-        <button onclick="showText(true)">Ja</button>
-        <button onclick="showText(false)">Nein</button>
-        <p id="response" style="display: none;"></p>
+        <img id="daily-image" src="" alt="Tägliches Bild">
+        <div class="bubble" id="text-bubble"></div>
     </div>
 
     <script>
-        // Startdatum setzen (z. B. 15. März 2025)
-        let startDate = new Date(2025, 2, 15); // 2 = März (Januar = 0)
+        let startDate = new Date(2025, 2, 15); // Startdatum: 15. März 2025
         let currentDay = Math.floor((new Date() - startDate) / (1000 * 60 * 60 * 24)) + 1;
 
         let texts = {
-            1: "Das erste Bild...entstanden am 28.10.2023, dieser Gesichtsaudruck <br><br> wenn du weisst, dass du gleich den Schlafanzug anziehen kannst und dich auf die Couch legen kannst. <br><br> Es ist diese eine Sekunde, in der du in die Kamera schaust, lachst und im nächsten Moment aber vergessen hast, dass ich ein Foto gemacht habe. <br><br> Ich liebe es...Ich liebe diese Bilder und du glaubst nicht wie oft ich mir jedes einzelne Bild anschaue, genau Bilder wie diese...Bilder die du die nächsten Tage sehen wirst ;) <br><br> Ich freu mich darauf, dir beschreiben zu können, was du in mir auslöst. <br><br> Danke, dass es dich gibt! <3",
+            1: "Das erste Bild... entstanden am 28.10.2023. Dein Gesichtsausdruck, wenn du weißt, dass du gleich den Schlafanzug anziehen kannst...",
             2: "Dieses Bild erinnert mich an unseren schönsten Moment...",
             3: "Hier sehe ich dich, wie du mein Herz erwärmst...",
             4: "Ein Bild voller Liebe und Erinnerung...",
@@ -79,24 +87,21 @@
             9: "Ein Bild, das all meine Gefühle für dich zeigt..."
         };
 
-        function startJourney() {
+        function startJourney(isYes) {
+            if (!isYes) {
+                alert("Naja du hast Pech gehabt, du bekommst trotzdem was zu hören :)");
+            }
             document.getElementById("intro").style.display = "none";
             document.getElementById("image-container").style.display = "block";
+            showImageAndText();
         }
 
-        function showImage() {
+        function showImageAndText() {
             let img = document.getElementById("daily-image");
+            let textBubble = document.getElementById("text-bubble");
             img.src = `bilder/${currentDay}.jpg`;
-        }
-
-        function showText(answerYes) {
-            let response = document.getElementById("response");
-            if (answerYes) {
-                response.innerHTML = texts[currentDay] || "Heute gibt es keine Geschichte.";
-            } else {
-                response.innerHTML = "Naja... Pech gehabt, du bekommst trotzdem was dazu gesagt! <br><br>" + (texts[currentDay] || "Heute gibt es keine Geschichte.");
-            }
-            response.style.display = "block";
+            textBubble.innerHTML = texts[currentDay] || "Heute gibt es keine Geschichte.";
+            textBubble.style.display = "block";
         }
     </script>
 </body>
