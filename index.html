@@ -24,14 +24,19 @@
             border-radius: 10px;
             box-shadow: 0 0 15px #d4a1ff;
         }
-        .bubble {
+        .text-box {
             background: #800080;
             color: white;
             padding: 15px;
-            border-radius: 15px;
-            max-width: 500px;
+            border-radius: 10px;
+            max-width: 90%;
             margin: 20px auto;
             display: none;
+            text-align: left;
+            font-size: 16px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         button {
             background-color: #800080;
@@ -68,7 +73,7 @@
 
     <div class="container" id="image-container">
         <img id="daily-image" src="" alt="Tägliches Bild">
-        <div class="bubble" id="text-bubble"></div>
+        <div class="text-box" id="text-box"></div>
     </div>
 
     <script>
@@ -98,10 +103,10 @@
 
         function showImageAndText() {
             let img = document.getElementById("daily-image");
-            let textBubble = document.getElementById("text-bubble");
+            let textBox = document.getElementById("text-box");
             img.src = `bilder/${currentDay}.jpg`;
-            textBubble.innerHTML = texts[currentDay] || "Heute gibt es keine Geschichte.";
-            textBubble.style.display = "block";
+            textBox.innerHTML = texts[currentDay] || "Heute gibt es keine Geschichte.";
+            textBox.style.display = "block";
         }
     </script>
 </body>
