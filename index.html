@@ -35,6 +35,8 @@
             text-align: left;
             font-size: 16px;
             line-height: 1.5;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         button {
             background-color: #800080;
@@ -49,14 +51,14 @@
         button:hover {
             background-color: #a64dff;
         }
-        #image-container, #game-container {
+        #image-container {
             display: none;
             margin-top: 20px;
         }
-        canvas {
-            background: white;
-            display: block;
-            margin: auto;
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #d4a1ff;
         }
     </style>
 </head>
@@ -69,100 +71,42 @@
         <button onclick="startJourney(false)">Ahh no</button>
     </div>
 
-    <div class="container" id="game-container">
-        <p>Na gut, dann spielen wir erst eine Runde, vielleicht ändert das was an deiner Laune ;)</p>
-        <canvas id="pongCanvas" width="400" height="300"></canvas>
-        <button onclick="restartGame()">Jaa, von mir aus</button>
-        <button onclick="endGame()">Nö, zeig mir ein Bild</button>
-    </div>
-
     <div class="container" id="image-container">
         <img id="daily-image" src="" alt="Tägliches Bild">
         <div class="text-box" id="text-box"></div>
     </div>
 
     <script>
-        let startDate = new Date(2025, 2, 15);
+        let startDate = new Date(2025, 2, 15); // Startdatum: 15. März 2025
         let currentDay = Math.floor((new Date() - startDate) / (1000 * 60 * 60 * 24)) + 1;
 
         let texts = {
-            1: "Das erste Bild... entstanden am 28.10.2023. Dein Gesichtsausdruck, wenn du weißt, dass du gleich den Schlafanzug anziehen kannst...",
-            2: "Dieses Bild erinnert mich an unseren schönsten Moment...",
-            3: "Hier sehe ich dich, wie du mein Herz erwärmst...",
+            1: "Das erste Bild...Entstanden am 28.10.2023. Dein Gesichtsausdruck, wenn die Löwenmähne über Nacht explodiert ist. Dieses Lachen dass einem Morgens entgegengebracht wird...und das jeden Morgen aufs neue. Es ist unbeschreiblich...eigentlich habe ich keine Lust aufzustehen aber gleichzeitig weiss ich, Mucki wacht gleich auf und sagt dir mit ihrer verschlafenen Stimme: Halluuuu...das ist der Moment wo es sich lohnt, aufgestanden zu sein...",
+            2: "30.01.2023, der alte macht wieder Essen, dass die ganze Bude danach stinkt. Gut dass ich erst heute die Haare gewaschen habe...ich liebe es! Deine Logik mit den Haaren, die erst zu waschen und Abends dann nochmal festzustellen: oh ich muss heute duschen...❤ Ich liebe es für dich/uns zu kochen, ich sage immer: Kochen ist liebe und man muss es mit Herz machen...weil ich immer gerne für meinen Herzensmenschen koche und da wird immer mit Herz gekocht...",
+            3: "Bis heute verstehe nicht, wie das funktioniert...ein Mensch ist im Tiefschlaf und sonnt sich dabei ganz gemütlich. Die Arme hinter den Kopf verschränkt, so dass man denkt: okay Sie ist gerade in Thailand oder Griechenland am Strand und holt sich eine Ladung Vitamin D ab...Ich habe dich dich 5 Mal in dieser Position bereits fotografiert und ich bin mir ziemlich sicher, es werden noch einige Male dazukommen...",
+            4: "4.April 2023, der alte hat mal wieder auf Busniess upgegraded und Mucki hat damit gekämpft nicht im Flugzeug zu kotzen...dieses Bild entstand in der Etihad Business Lounge um 4 Uhr Morgens, ohne Schlaf, mit Zeitverschiebung und Nachwirkungen einer Magen-Darm-Grippe...und ich liebe es! Dein Lachen, welches trotzdem durchkommt und mir immer wieder das Zeichen gibt, Poujan mir gehts gut, wenn du da bist...Das bedeutet alles für mich! An dieser Stelle mcöhte ich gerne sagen: es ändert sich nichts!, ich fliege weiterhin nur noch Business...",
+            5: "Dieses Bild lässt mein Herz höher schlagen...",
+            6: "Der Moment, an dem ich wusste, dass du besonders bist...",
+            7: "Eine Erinnerung, die ich für immer festhalte...",
+            8: "So sehe ich dich, wenn ich die Augen schließe...",
+            9: "Ein Bild, das all meine Gefühle für dich zeigt..."
         };
 
         function startJourney(isYes) {
-            document.getElementById("intro").style.display = "none";
             if (!isYes) {
-                document.getElementById("game-container").style.display = "block";
-                startPongGame();
-            } else {
-                showImageAndText();
+                alert("Naja du hast Pech gehabt, du bekommst trotzdem was zu hören :)");
             }
+            document.getElementById("intro").style.display = "none";
+            document.getElementById("image-container").style.display = "block";
+            showImageAndText();
         }
 
         function showImageAndText() {
-            document.getElementById("image-container").style.display = "block";
             let img = document.getElementById("daily-image");
             let textBox = document.getElementById("text-box");
             img.src = `bilder/${currentDay}.jpg`;
             textBox.innerHTML = texts[currentDay] || "Heute gibt es keine Geschichte.";
             textBox.style.display = "block";
-        }
-
-        function restartGame() {
-            startPongGame();
-        }
-
-        function endGame() {
-            document.getElementById("game-container").style.display = "none";
-            showImageAndText();
-        }
-
-        function startPongGame() {
-            let canvas = document.getElementById("pongCanvas");
-            let ctx = canvas.getContext("2d");
-            let ball = { x: 200, y: 150, dx: 2, dy: 2, radius: 5 };
-            let paddle = { x: 180, y: 280, width: 40, height: 10 };
-            let rightPressed = false, leftPressed = false;
-
-            document.addEventListener("keydown", function(e) {
-                if (e.key === "Right" || e.key === "ArrowRight") rightPressed = true;
-                if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = true;
-            });
-            document.addEventListener("keyup", function(e) {
-                if (e.key === "Right" || e.key === "ArrowRight") rightPressed = false;
-                if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = false;
-            });
-
-            function draw() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
-                ctx.beginPath();
-                ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-                ctx.fill();
-
-                ball.x += ball.dx;
-                ball.y += ball.dy;
-
-                if (ball.x < ball.radius || ball.x > canvas.width - ball.radius) ball.dx *= -1;
-                if (ball.y < ball.radius) ball.dy *= -1;
-                if (ball.y > canvas.height) startPongGame();
-
-                if (
-                    ball.y + ball.radius >= paddle.y &&
-                    ball.x >= paddle.x &&
-                    ball.x <= paddle.x + paddle.width
-                ) {
-                    ball.dy *= -1;
-                }
-
-                if (rightPressed && paddle.x < canvas.width - paddle.width) paddle.x += 4;
-                if (leftPressed && paddle.x > 0) paddle.x -= 4;
-
-                requestAnimationFrame(draw);
-            }
-            draw();
         }
     </script>
 </body>
